@@ -21,4 +21,4 @@ jobs:
           name: Test code
           command: |
             npx playwright install chromium
-            npm run test
+            npm run test:ci
