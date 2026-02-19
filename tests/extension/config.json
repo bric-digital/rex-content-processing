@@ -1,0 +1,13 @@
+{
+    "configuration_url": "config.json",
+    "headers": {
+        "identifier": "<IDENTIFIER>"
+    },
+    "content_processing": {
+    },
+    "ui": [{
+        "title": "REX Content Processing Extension",
+        "identifier": "main",
+        "default": true
+    }]
+}

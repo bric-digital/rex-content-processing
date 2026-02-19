@@ -1,0 +1,70 @@
+{
+  "name": "@bric/rex-content-processing",
+  "version": "0.0.1",
+  "description": "REX module defining content-processing infrastructure for tasks such as sanitizing sensitive data.",
+  "keywords": [
+    "extension",
+    "rex"
+  ],
+  "author": "Behavioral Research Innovation Center",
+  "type": "module",
+  "main": "index.mts",
+  "homepage": "https://github.com/bric-digital/rex-content-processing",
+  "bugs": {
+    "url": "https://github.com/bric-digital/rex-content-processing/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bric-digital/rex-content-processing.git"
+  },
+  "exports": {
+    "./library": "./src/library.mts",
+    "./processors": "./src/processors.mts",
+    "./service-worker": "./src/service-worker.mts"
+  },
+  "scripts": {
+    "build": "webpack -c ./webpack.config.ts --no-devtool",
+    "lint": "eslint src",
+    "pretest": "node tests/scripts/build-test-bundle.js",
+    "test": "playwright test",
+    "test:ci": "playwright test --reporter=dot",
+    "test:debug": "playwright test --debug",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:unit": "playwright test specs/"
+  },
+  "devDependencies": {
+    "@eslint-community/eslint-utils": "^4.9.1",
+    "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.58.2",
+    "@types/jquery": "^3.5.33",
+    "@types/node": "^24.10.0",
+    "ajv": "^8.18.0",
+    "baseline-browser-mapping": "^2.9.14",
+    "chrome-types": "^0.1.386",
+    "copy-webpack-plugin": "^13.0.1",
+    "css-loader": "^7.1.2",
+    "esbuild": "^0.27.2",
+    "eslint": "^10.0.0",
+    "globals": "^16.5.0",
+    "jiti": "^2.6.1",
+    "npm-package-json-lint": "^9.1.0",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.14.0",
+    "validator": "^13.15.26",
+    "webpack": "^5.102.1",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "@bric/rex-core": "github:bric-digital/rex-core",
+    "@cdssnc/sanitize-pii": "^2.1.1",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "check-types": "^11.2.3",
+    "jquery": "^3.7.1"
+  }
+}
