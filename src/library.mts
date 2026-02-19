@@ -1,7 +1,7 @@
 import check from 'check-types'
 
 export class REXContentProcessor {
-  updateConfiguration(config) {
+  updateConfiguration(config) { // eslint-disable-line @typescript-eslint/no-unused-vars
 
   }
 
@@ -52,7 +52,7 @@ export class REXContentProcessorManager {
     }
   }
 
-  processItem(item, processor, force:boolean = false):Promise<any> {
+  processItem(item, processor, force:boolean = false):Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
     return new Promise((resolve) => {
       if (check.string(item) && force) {
         processor.processString(item)
@@ -113,7 +113,7 @@ export class REXContentProcessorManager {
     })
   }
 
-  processContent(content):Promise<any> {
+  processContent(content):Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
     return new Promise((resolve) => {
       const pending:REXContentProcessor[] = []
 
@@ -145,7 +145,7 @@ export class REXContentProcessorManager {
   registerProcessor(processor:REXContentProcessor, priority:number = 0) {
     const priorityStr:string = `${Math.floor(priority)}`
 
-    let toRemoves = []
+    const toRemoves = []
 
     for (const key of this.processorKeys) {
       if (key.endsWith(`-${processor.name()}`)) {
