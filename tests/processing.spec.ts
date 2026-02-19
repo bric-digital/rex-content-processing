@@ -16,6 +16,8 @@ test.describe('REX Content Processors', () => {
       .then((processed) => {
         expect(processed).toEqual({abc: [1, 2, 3]})
       })
+
+    nullProcessor.disable()
   });
 
   test('Regular Expression Content Processor', async ({ page }) => {
@@ -57,10 +59,12 @@ test.describe('REX Content Processors', () => {
         expect(processed).toEqual({'test*': ['hi world']})
       })
 
-      REXContentProcessorManager.getInstance().processContent({'test*': ['abc123']})
+    REXContentProcessorManager.getInstance().processContent({'test*': ['abc123']})
       .then((processed) => {
-        expect(processed).toEqual({'test*': ['abcxx']})
+        expect(processed).toEqual({'test*': ['abcxxx']})
       })
+
+      regexpProcessor.disable()
   });
 
   test('Sanitize PII Content Processor', async ({ page }) => {
@@ -121,5 +125,7 @@ test.describe('REX Content Processors', () => {
       .then((processed) => {
         expect(processed).toEqual({'test*': {message: 'There\'s no place like [Redacted: ip_address].'}})
       })
+
+      sanitizeProcessor.disable()
   });
 });

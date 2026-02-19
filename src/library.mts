@@ -18,6 +18,10 @@ export class REXContentProcessor {
   enable(priority:number = 0) {
     REXContentProcessorManager.getInstance().registerProcessor(this, priority)
   }
+
+  disable() {
+    REXContentProcessorManager.getInstance().unregisterProcessor(this)
+  }
 }
 
 export class REXContentProcessorManager {
@@ -170,5 +174,25 @@ export class REXContentProcessorManager {
     this.processorKeys.reverse()
 
     this.processors[processorKey] = processor
+  }
+
+  unregisterProcessor(processor:REXContentProcessor,) {
+    const toRemoves = []
+
+    for (const key of this.processorKeys) {
+      if (key.endsWith(`-${processor.name()}`)) {
+        toRemoves.push(key)
+      }
+    }
+
+    for (const toRemove of toRemoves) {
+      let index = this.processorKeys.indexOf(toRemove)
+
+      while (index >= 0) {
+        this.processorKeys.splice(index, 1)
+
+        index = this.processorKeys.indexOf(toRemove)
+      }
+    }
   }
 }
