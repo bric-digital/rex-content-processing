@@ -19,5 +19,4 @@ jobs:
           command: npm run lint
       - run:
           name: Test code
-          command: |
-            npx playwright install chromium && npm run test:ci
+          command: npx playwright install chromium && npm run test:ci
