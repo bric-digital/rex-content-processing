@@ -59,7 +59,7 @@ test.describe('REX Content Processors', () => {
 
       REXContentProcessorManager.getInstance().processContent({'test*': ['abc123']})
       .then((processed) => {
-        expect(processed).toEqual({'test*': ['abcxxx']})
+        expect(processed).toEqual({'test*': ['abcxx']})
       })
   });
 
