@@ -99,8 +99,8 @@ export class REXOpenRedactionContentProcessor extends REXContentProcessor {
     const configuration = config['openRedaction']
     if (configuration !== undefined && check.string(configuration)) {
       try{
+        const options = ConfigCodec.importFromString(configuration);
         try{
-          const options = ConfigCodec.importFromString(configuration);
           this.redactor = new OpenRedaction(options)
         } catch {
           throw new Error ("Unable to load JSON configuration for OpenRedaction, configuration not updated.");
@@ -112,11 +112,7 @@ export class REXOpenRedactionContentProcessor extends REXContentProcessor {
   }
 
   processString(content:string):Promise<string> {
-    return new Promise((resolve) => {
-      return this.redactor
-        .detect(content)
-        .then(result => result.redacted);
-    })
+    return this.redactor.detect(content).then(result => result.redacted);
   }
 
   name(): string {
