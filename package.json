@@ -38,7 +38,7 @@
     "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.58.2",
     "@types/jquery": "^3.5.33",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.13",
     "ajv": "^8.18.0",
     "baseline-browser-mapping": "^2.9.14",
     "chrome-types": "^0.1.386",
@@ -61,10 +61,10 @@
   "dependencies": {
     "@bric/rex-core": "github:bric-digital/rex-core",
     "@cdssnc/sanitize-pii": "^2.1.1",
-    "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "check-types": "^11.2.3",
-    "jquery": "^3.7.1"
+    "jquery": "^3.7.1",
+    "openredaction-in-browser": "file:../openredaction-in-browser/packages/core"
   }
 }
