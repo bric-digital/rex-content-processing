@@ -72,7 +72,7 @@ test.describe('REX OpenRedaction Content Processor', () => {
 
       const redactedWithDefault = await openRedactionProcessor.processString(unicodePhone)
       expect(redactedWithDefault).not.toEqual(unicodePhone)
-      expect(redactedWithDefault).toContain('[PHONE_US_')
+      expect(redactedWithDefault).toMatch(/^\[PHONE_[0-9]+\]\.$/)
 
       openRedactionProcessor.updateConfiguration({
         openRedaction: '{}'

@@ -4,7 +4,7 @@ export interface OpenRedactionCase {
   expectedPattern?:RegExp
 }
 
-const PHONE_TOKEN = String.raw`\[PHONE_US_[0-9]+\]`
+const PHONE_TOKEN = String.raw`\[PHONE_[0-9]+\]`
 const EMAIL_TOKEN = String.raw`\[EMAIL_[0-9]+\]`
 const CREDIT_CARD_TOKEN = String.raw`\[CREDIT_CARD_[0-9]+\]`
 const GOV_ID_TOKEN = String.raw`\[(?:SSN|ITIN|EIN|PASSPORT(?:_[A-Z]+)?|GOV(?:ERNMENT)?_ID|PHONE_US)_[0-9]+\]`
@@ -38,7 +38,8 @@ export const emailCases:OpenRedactionCase[] = [
   { input: 'contact me at john.doe@example.com', expected: 'contact me at john.doe@example.com' },
   { input: 'john.doe+test@gmail.com', expectedPattern: new RegExp(`^${EMAIL_TOKEN}$`) },
   { input: 'alerts@billing.prod.company.com', expectedPattern: new RegExp(`^${EMAIL_TOKEN}$`) },
-  { input: 'EMAIL ME AT JOHN.DOE@EXAMPLE.COM', expectedPattern: new RegExp(`^EMAIL ME AT ${EMAIL_TOKEN}$`) },
+  { input: 'EMAIL ME AT JOHN.DOE@EXAMPLE.COM', expected: 'EMAIL ME AT JOHN.DOE@EXAMPLE.COM' },
+  { input: 'EMAIL ME AT JOHN.DOE@GMAIL.COM', expectedPattern: new RegExp(`^EMAIL ME AT ${EMAIL_TOKEN}$`) },
   { input: 'Send it to john@example.com.', expectedPattern: new RegExp(`^Send it to ${EMAIL_TOKEN}\\.$`) },
   { input: '<john@example.com>', expectedPattern: new RegExp(`^<${EMAIL_TOKEN}>$`) },
   { input: '“john@example.com”', expectedPattern: new RegExp(`^“${EMAIL_TOKEN}”$`) },
