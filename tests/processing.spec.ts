@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { REXContentProcessor, REXContentProcessorManager } from '@bric/rex-content-processing/library'
-import { REXRegexpContentProcessor, REXSanitizePIIContentProcessor, REXOpenRedactionContentProcessor } from '@bric/rex-content-processing/processors'
+import {
+  REXRegexpContentProcessor,
+  REXSanitizePIIContentProcessor
+} from '@bric/rex-content-processing/processors'
 
 test.describe('REX Content Processors', () => {
   test('Null Content Processor', async ({ page }) => {
@@ -91,51 +94,4 @@ test.describe('REX Content Processors', () => {
       sanitizeProcessor.disable()
   });
 
-  test('OpenRedaction Content Processor redacts sensitive values', async ({ page }) => {
-    const openRedactionProcessor = new REXOpenRedactionContentProcessor()
-    openRedactionProcessor.enable()
-
-    try {
-      const input = { 'test*': 'Contact me at jane.doe@example.org or 555-666-9999.' }
-      const processed = await REXContentProcessorManager.getInstance().processContent(input)
-
-      expect(processed).not.toEqual(input)
-      expect(processed['test*']).not.toContain('jane.doe@example.org')
-      expect(processed['test*']).not.toContain('555-666-9999')
-    } finally {
-      openRedactionProcessor.disable()
-    }
-  });
-
-  test('OpenRedaction Content Processor updates configuration and handles invalid config', async ({ page }) => {
-    const openRedactionProcessor = new REXOpenRedactionContentProcessor()
-    openRedactionProcessor.enable()
-
-    try {
-      openRedactionProcessor.updateConfiguration({
-        openRedaction: JSON.stringify({
-          version: '1.0',
-          timestamp: '2026-02-24T00:00:00.000Z',
-          options: {
-            includeEmails: false,
-            includePhones: false,
-            includeNames: false,
-            includeAddresses: false
-          }
-        })
-      })
-
-      const emailOnly = 'Contact me at jane.doe@example.org.'
-      const redactionDisabled = await openRedactionProcessor.processString(emailOnly)
-      expect(redactionDisabled).toEqual(emailOnly)
-
-      expect(() => {
-        openRedactionProcessor.updateConfiguration({
-          openRedaction: 'not-valid-json'
-        })
-      }).toThrow('Unable to parse string into JSON configuration for OpenRedaction, configuration not updated.')
-    } finally {
-      openRedactionProcessor.disable()
-    }
-  });
 });
