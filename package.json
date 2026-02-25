@@ -65,6 +65,6 @@
     "bootstrap-icons": "^1.13.1",
     "check-types": "^11.2.3",
     "jquery": "^3.7.1",
-    "openredaction-in-browser": "file:../openredaction-in-browser/packages/core"
+    "openredaction-in-browser": "github:bric-digital/openredaction-in-browser"
   }
 }
