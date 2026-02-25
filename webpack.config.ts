@@ -10,7 +10,10 @@ const moduleRules = {
   rules: [{
     test: /\.([cm]?ts|tsx)$/,
     loader: "ts-loader",
-    options: { allowTsInNodeModules: true }
+    options: {
+      allowTsInNodeModules: true,
+      configFile: "tsconfig.tests.json"
+    }
   }, {
     test: /\.css$/,
     use: ['style-loader', 'css-loader']
