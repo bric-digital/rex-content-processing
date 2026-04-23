@@ -27,7 +27,6 @@ export const test = base.extend<{
     use(context)
       .then(() => {
         setTimeout(() => {
-          console.log('closing context')
           context.close();
         }, 10000)
     })
