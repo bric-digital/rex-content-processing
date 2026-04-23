@@ -38,6 +38,8 @@ export class REXOpenRedactionContentProcessor extends REXContentProcessor {
   }
 
   processString(content:string):Promise<string> {
+    console.log(`REXOpenRedactionContentProcessor.processString: ${content}`)
+
     return this.redactor.detect(content).then(result => result.redacted);
   }
 

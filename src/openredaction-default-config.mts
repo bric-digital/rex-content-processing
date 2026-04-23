@@ -148,7 +148,7 @@ export const REX_OPEN_REDACTION_DEFAULT_CONFIGURATION = {
       flags: 'gi',
       priority: 96,
       placeholder: '[ROUTING_NUMBER_{n}]',
-      description: 'Routing number with explicit \"routing is\" context',
+      description: 'Routing number with explicit "routing is" context',
       severity: 'high'
     },
     // Captures ACH routing numbers in ACH-specific context.

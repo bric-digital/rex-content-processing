@@ -1,4 +1,4 @@
-import { REXConfiguration } from '@bric/rex-core/extension'
+import { REXConfiguration } from '@bric/rex-core/common'
 import rexCorePlugin, { REXServiceWorkerModule, registerREXModule } from '@bric/rex-core/service-worker'
 import { REXContentProcessorManager } from '@bric/rex-content-processing/library'
 

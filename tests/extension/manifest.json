@@ -1,10 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "REX Content Processing Test Extension",
+  "name": "REX Page Manipulation Test Extension",
   "version": "1.0.0",
-  "description": "Test extension for rex-content-processing modules",
+  "description": "Test extension for rex-page-manipulation.",
   "permissions": [
-    "storage"
+    "scripting",
+    "storage",
+    "nativeMessaging"
   ],
   "action": {
     "default_icon": {
@@ -15,6 +17,9 @@
       "16": "images/icon-16.png"
     }
   },
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
     "service_worker": "js/serviceWorker/bundle.js"
   }

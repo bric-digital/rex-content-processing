@@ -13,22 +13,25 @@ import { mkdir } from 'fs/promises'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const srcDir = join(__dirname, '../../src')
-const outputDir = join(__dirname, '../../build')
+const srcDir = join(__dirname, '../src')
+const outputDir = join(__dirname, '../build')
 
 // Ensure output directory exists
 await mkdir(outputDir, { recursive: true })
 
 const modules = [
   {
-    name: 'library',
-    input: join(srcDir, 'library.mts'),
-    output: join(outputDir, 'library.bundle.js')
-  },
-  {
-    name: 'processors',
-    input: join(srcDir, 'processors.mts'),
-    output: join(outputDir, 'processors.bundle.js')
+    name: 'service-worker',
+    input: join(srcDir, 'service-worker.ts'),
+    output: join(outputDir, '../extension/js/serviceWorker/bundle.js')
+  }, {
+    name: 'extension',
+    input: join(srcDir, 'extension.ts'),
+    output: join(outputDir, '../extension/js/extension/bundle.js')
+  }, {
+    name: 'browser',
+    input: join(srcDir, 'browser.ts'),
+    output: join(outputDir, '../extension/js/browser/bundle.js')
   }
 ]
 
@@ -49,6 +52,13 @@ try {
       // Define globals
       define: {
         'chrome': 'globalThis.chrome'
+      },
+      loader: {
+        '.woff': 'file',
+        '.woff2': 'file',
+        '.ttf': 'file',
+        '.eot': 'file',
+        '.svg': 'file',
       }
     })
 

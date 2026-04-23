@@ -66,7 +66,7 @@ export class REXContentProcessorManager {
       } else if (check.array(item)) {
         const toUpdate = [... item]
 
-        const updated = []
+        const updated:any[] = [] // eslint-disable-line @typescript-eslint/no-explicit-any
 
         const processNextChild = () => {
           if (toUpdate.length === 0) {
@@ -95,18 +95,24 @@ export class REXContentProcessorManager {
           } else {
             const nextKey = keys.shift()
 
-            const value = item[nextKey]
+            if (nextKey !== undefined) {
+              const value = item[nextKey]
 
-            if (nextKey.endsWith('*')) {
-              force = true
+              let keyForce:boolean = force
+
+              if (nextKey.endsWith('*')) {
+                keyForce = true
+              }
+
+              this.processItem(value, processor, keyForce)
+                .then((updatedItem) => {
+                  toUpdate[nextKey] = updatedItem
+
+                  processNextKey()
+                })
+            } else {
+              processNextKey()
             }
-
-            this.processItem(value, processor, force)
-              .then((updatedItem) => {
-                toUpdate[nextKey] = updatedItem
-
-                processNextKey()
-              })
           }
         }
 
@@ -149,7 +155,7 @@ export class REXContentProcessorManager {
   registerProcessor(processor:REXContentProcessor, priority:number = 0) {
     const priorityStr:string = `${Math.floor(priority)}`
 
-    const toRemoves = []
+    const toRemoves:string[] = []
 
     for (const key of this.processorKeys) {
       if (key.endsWith(`-${processor.name()}`)) {
@@ -177,7 +183,7 @@ export class REXContentProcessorManager {
   }
 
   unregisterProcessor(processor:REXContentProcessor,) {
-    const toRemoves = []
+    const toRemoves:string[] = []
 
     for (const key of this.processorKeys) {
       if (key.endsWith(`-${processor.name()}`)) {

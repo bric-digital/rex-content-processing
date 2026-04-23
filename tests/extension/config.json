@@ -1,12 +1,18 @@
 {
     "configuration_url": "config.json",
-    "headers": {
-        "identifier": "<IDENTIFIER>"
-    },
+    "identifier": "rex-content-processing-test",
     "content_processing": {
+        "regexp": [{
+            "pattern": "hello",
+            "replacement": "hola"
+        }, {
+            "pattern": "\\d",
+            "replacement": "*"
+        }],
+        "sanitize_pii": {}
     },
     "ui": [{
-        "title": "REX Content Processing Extension",
+        "title": "REX Content Processing Testing Extension",
         "identifier": "main",
         "default": true
     }]

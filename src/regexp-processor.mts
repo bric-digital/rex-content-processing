@@ -16,6 +16,8 @@ export class REXRegexpContentProcessor extends REXContentProcessor {
   }
 
   processString(content:string):Promise<string> {
+    console.log(`REXRegexpContentProcessor.processString: ${content}`)
+
     return new Promise((resolve) => {
       for (const regexp of this.regexpMappings) {
         const expression = new RegExp(regexp.pattern, 'g')
