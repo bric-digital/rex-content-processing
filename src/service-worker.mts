@@ -37,7 +37,7 @@ class REXContentProcessingModule extends REXServiceWorkerModule {
       })
   }
 
-  updateConfiguration(config) {
+  updateConfiguration(config:any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     REXContentProcessorManager.getInstance().updateConfiguration(config)
   }
 

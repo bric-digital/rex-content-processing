@@ -18,7 +18,7 @@ export class REXOpenRedactionContentProcessor extends REXContentProcessor {
     ConfigCodec.importFromString(REX_OPEN_REDACTION_DEFAULT_CONFIGURATION_JSON)
   );
   
-  updateConfiguration(config) {
+  updateConfiguration(config:any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     // Update the configuration which requires replaceing the
     // redactor with a new instance, currently assumed to be JSON
     // encoded as a string

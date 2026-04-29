@@ -9,7 +9,7 @@ export interface RegexpReplacement {
 export class REXRegexpContentProcessor extends REXContentProcessor {
   regexpMappings:RegexpReplacement[] = []
 
-  updateConfiguration(config) {
+  updateConfiguration(config:any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     if (config['regexp'] !== undefined && check.array(config['regexp'])) {
       this.regexpMappings = config['regexp']
     }
@@ -27,7 +27,7 @@ export class REXRegexpContentProcessor extends REXContentProcessor {
     })
   }
 
-  processContent(content):Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
+  processContent(content:any):Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
     return new Promise((resolve) => {
 
       resolve(content)

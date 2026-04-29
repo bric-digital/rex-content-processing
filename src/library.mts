@@ -1,8 +1,12 @@
 import check from 'check-types'
 
-export class REXContentProcessor {
-  updateConfiguration(config) { // eslint-disable-line @typescript-eslint/no-unused-vars
+interface REXContentProcessorsConfiguration {
+  [key: string]: REXContentProcessor; // Any string key is "optional" until assigned
+}
 
+export class REXContentProcessor {
+  updateConfiguration(config:any) { // eslint-disable-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-explicit-any
+    // Intentionally left emptty
   }
 
   processString(content:string):Promise<string> {
@@ -28,7 +32,7 @@ export class REXContentProcessorManager {
   static instance:REXContentProcessorManager|null = null
 
   processorKeys:string[] = []
-  processors = {}
+  processors:REXContentProcessorsConfiguration = {}
 
   constructor() {
     if (REXContentProcessorManager.instance !== null) {
@@ -48,7 +52,7 @@ export class REXContentProcessorManager {
     return REXContentProcessorManager.instance;
   }
 
-  updateConfiguration(config) {
+  updateConfiguration(config:REXContentProcessorsConfiguration) {
     for (const key of this.processorKeys) {
       const processor:REXContentProcessor = this.processors[key]
 
@@ -56,7 +60,7 @@ export class REXContentProcessorManager {
     }
   }
 
-  processItem(item, processor, force:boolean = false):Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
+  processItem(item:any, processor:REXContentProcessor, force:boolean = false):Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
     return new Promise((resolve) => {
       if (check.string(item) && force) {
         processor.processString(item)
@@ -85,7 +89,7 @@ export class REXContentProcessorManager {
 
         processNextChild()
       } else if (check.object(item)) {
-        const toUpdate = {}
+        const toUpdate:any = {} // eslint-disable-line @typescript-eslint/no-explicit-any
 
         const keys = [... Object.keys(item)]
 
@@ -96,7 +100,7 @@ export class REXContentProcessorManager {
             const nextKey = keys.shift()
 
             if (nextKey !== undefined) {
-              const value = item[nextKey]
+              const value = (item as any)[nextKey] // eslint-disable-line @typescript-eslint/no-explicit-any
 
               let keyForce:boolean = force
 
@@ -123,7 +127,7 @@ export class REXContentProcessorManager {
     })
   }
 
-  processContent(content):Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
+  processContent(content:any):Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
     return new Promise((resolve) => {
       const pending:REXContentProcessor[] = []
 
@@ -139,12 +143,16 @@ export class REXContentProcessorManager {
         } else {
           const processor = pending.shift()
 
-          this.processItem(inProgress, processor)
-            .then((result) => {
-              inProgress = result
+          if (processor !== undefined) {
+            this.processItem(inProgress, processor)
+              .then((result) => {
+                inProgress = result
 
-              nextPending()
-            })
+                nextPending()
+              })
+          } else {
+            resolve(inProgress)
+          }
         }
       }
 
