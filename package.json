@@ -20,7 +20,8 @@
   "exports": {
     "./library": "./src/library.mts",
     "./processors": "./src/processors.mts",
-    "./service-worker": "./src/service-worker.mts"
+    "./service-worker": "./src/service-worker.mts",
+    "./history-annotator": "./src/history-annotator.mts"
   },
   "scripts": {
     "build": "tsc",
