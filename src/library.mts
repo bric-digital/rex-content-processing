@@ -67,6 +67,13 @@ export class REXContentProcessorManager {
         .then((result) => {
           resolve(result)
         })
+        .catch((error) => {
+          // A processor that rejects (e.g. PII detector choking on a pathological
+          // string) must not hang the chain. Fall through with the item unchanged
+          // so the surrounding record still flows downstream.
+          console.error(`[rex-content-processing] Processor ${processor.name()} failed; leaving content unprocessed:`, error)
+          resolve(item)
+        })
       } else if (check.array(item)) {
         const toUpdate = [... item]
 
@@ -81,6 +88,11 @@ export class REXContentProcessorManager {
             this.processItem(nextItem, processor, force)
               .then((updatedItem) => {
                 updated.push(updatedItem)
+
+                processNextChild()
+              })
+              .catch(() => {
+                updated.push(nextItem)
 
                 processNextChild()
               })
@@ -111,6 +123,11 @@ export class REXContentProcessorManager {
               this.processItem(value, processor, keyForce)
                 .then((updatedItem) => {
                   toUpdate[nextKey] = updatedItem
+
+                  processNextKey()
+                })
+                .catch(() => {
+                  toUpdate[nextKey] = value
 
                   processNextKey()
                 })
@@ -148,6 +165,11 @@ export class REXContentProcessorManager {
               .then((result) => {
                 inProgress = result
 
+                nextPending()
+              })
+              .catch(() => {
+                // Keep the last good content and move to the next processor so a
+                // single failing processor cannot stall the whole pipeline.
                 nextPending()
               })
           } else {

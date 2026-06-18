@@ -2,6 +2,29 @@ import { test, expect } from '@playwright/test';
 import { REXContentProcessor, REXContentProcessorManager } from '@bric/rex-content-processing/library'
 import { REXRegexpContentProcessor, REXSanitizePIIContentProcessor } from '@bric/rex-content-processing/processors'
 
+/**
+ * Processor whose processString always rejects. Stands in for a real processor
+ * (e.g. the OpenRedaction PII detector) choking on a pathological record.
+ */
+class RejectingContentProcessor extends REXContentProcessor {
+  processString(content:string):Promise<string> { // eslint-disable-line @typescript-eslint/no-unused-vars
+    return Promise.reject(new Error('processor failure on pathological record'))
+  }
+
+  name(): string {
+    return 'RejectingContentProcessor'
+  }
+}
+
+function withTimeout<T>(promise:Promise<T>, ms:number, label:string):Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_resolve, reject) => {
+      setTimeout(() => reject(new Error(`${label} did not settle within ${ms}ms (hung)`)), ms)
+    })
+  ])
+}
+
 test.describe('REX Content Processors', () => {
   test('Null Content Processor', async ({ page }) => {
     const nullProcessor = new REXContentProcessor()
@@ -127,5 +150,27 @@ test.describe('REX Content Processors', () => {
       })
 
       sanitizeProcessor.disable()
+  });
+
+  test('A rejecting processor does not hang processContent', async ({ page }) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+    const rejectingProcessor = new RejectingContentProcessor()
+    rejectingProcessor.enable()
+
+    // A real history visit carries a force-processed (starred) string field.
+    // The rejecting processor will reject while handling that field. processContent
+    // must still settle so the surrounding visit and the collection-complete event
+    // continue to flow to PDK instead of vanishing.
+    const processed = await withTimeout(
+      REXContentProcessorManager.getInstance().processContent({ 'url*': 'https://example.com/page', visit_id: '42' }),
+      5000,
+      'processContent'
+    )
+
+    // The non-string field must survive untouched; the failed field falls through
+    // with its original value rather than dropping the whole record.
+    expect(processed.visit_id).toEqual('42')
+    expect(processed['url*']).toEqual('https://example.com/page')
+
+    rejectingProcessor.disable()
   });
 });
