@@ -9,7 +9,15 @@ export class REXContentProcessor {
     // Intentionally left emptty
   }
 
+  /* Used for string changes. Override in subclasses. */
   processString(content:string):Promise<string> {
+    return new Promise((resolve) => {
+      resolve(content)
+    })
+  }
+
+  /* Used for structural changes. Override in subclasses. */
+  processContent(content:any):Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
     return new Promise((resolve) => {
       resolve(content)
     })
@@ -144,11 +152,14 @@ export class REXContentProcessorManager {
           const processor = pending.shift()
 
           if (processor !== undefined) {
-            this.processItem(inProgress, processor)
-              .then((result) => {
-                inProgress = result
+            processor.processContent(inProgress)
+              .then((processedContent) => {
+                this.processItem(processedContent, processor)
+                  .then((result) => {
+                    inProgress = result
 
-                nextPending()
+                    nextPending()
+                  })
               })
           } else {
             resolve(inProgress)
