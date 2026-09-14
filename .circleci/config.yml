@@ -23,9 +23,22 @@ jobs:
       - run:
           name: Lint code
           command: npm run lint
+      # - run:
+      #     name: Test code
+      #     command: xvfb-run --server-args="-screen 0 1280x1024x24" npm run test:ci
       - run:
-          name: Test code
-          command: xvfb-run --server-args="-screen 0 1280x1024x24" npm run test:ci
+          name: Run Extension Tests
+          command: |
+            # Clear old lock files left behind by the CircleCI environment spin-up
+            sudo rm -f /tmp/.X99-lock /tmp/.X11-unix/X99
+            
+            # Execute with auto-allocated server numbers and verbose error piping
+            xvfb-run \
+              --auto-servernum \
+              --server-num=1 \
+              --server-args="-screen 1 1280x1024x24 -ac +extension GLX +render -noreset" \
+              -e /dev/stdout \
+              npx playwright test
       - store_artifacts:
           path: test-results
           destination: test-results
