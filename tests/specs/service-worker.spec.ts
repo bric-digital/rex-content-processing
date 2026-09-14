@@ -4,8 +4,6 @@ import { test, expect } from './fixtures.js';
 
 test.describe('REX Content Processing', () => {
   test('Processing though service worker', async ({serviceWorker}) => {
-    test.setTimeout(30_000);
-
     console.log('service worker 0')
 
     return new Promise<void>((resolve) => {
