@@ -151,6 +151,8 @@ export class REXContentProcessorManager {
       let inProgress = content
 
       const nextPending = () => {
+        console.log(`[rex-content-processing] Pending processors: ${pending.length}.`)
+
         if (pending.length === 0) {
           resolve(inProgress)
         } else {
@@ -168,6 +170,11 @@ export class REXContentProcessorManager {
                     inProgress = result
 
                     console.log(`[rex-content-processing] Processing complete with ${processor.name()}.`)
+
+                    nextPending()
+                  })
+                  .catch((error) => {
+                    console.log(`[rex-content-processing] Error encountered processing item with ${processor.name}: ${error}`)
 
                     nextPending()
                   })
