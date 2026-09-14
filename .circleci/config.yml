@@ -19,7 +19,7 @@ jobs:
           command: npm run lint
       - run:
           name: Test code
-          command: apt-get install -y xvfb xauth x11-utils && npx playwright install chromium && xvfb-run --server-args="-screen 0 1280x1024x24" npm run test:ci
+          command: sudo apt-get install -y xvfb xauth x11-utils && npx playwright install chromium && xvfb-run --server-args="-screen 0 1280x1024x24" npm run test:ci
       - store_artifacts:
           path: test-results
           destination: test-results
