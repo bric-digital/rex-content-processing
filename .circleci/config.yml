@@ -9,12 +9,6 @@ jobs:
     executor: node/default # use the default executor defined within the orb
     steps:
       - checkout
-      - run:
-          name: Install Xvfb and Playwright System Dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y xvfb xauth
-            npx playwright install
       - node/install-packages:
           pkg-manager: npm
       - run:
@@ -23,22 +17,41 @@ jobs:
       - run:
           name: Lint code
           command: npm run lint
+      - run:
+          name: Install Xvfb and Playwright System Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y xvfb xauth
+            npx playwright install
       # - run:
       #     name: Test code
       #     command: xvfb-run --server-args="-screen 0 1280x1024x24" npm run test:ci
       - run:
-          name: Run Extension Tests
+          name: Run Manifest V3 Extension Tests
           command: |
-            # Clear old lock files left behind by the CircleCI environment spin-up
-            sudo rm -f /tmp/.X99-lock /tmp/.X11-unix/X99
+            # 1. Clean up any corrupted display locks from the environment
+            sudo rm -f /tmp/.X99-lock /tmp/.X100-lock /tmp/.X11-unix/X99 /tmp/.X11-unix/X100
+
+            # 2. Start Xvfb manually as a background process on a custom display channel (:100)
+            # This completely avoids the buggy xvfb-run wrapper wrapper
+            Xvfb :100 -screen 0 1280x1024x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
             
-            # Execute with auto-allocated server numbers and verbose error piping
-            xvfb-run \
-              --auto-servernum \
-              --server-num=1 \
-              --server-args="-screen 1 1280x1024x24 -ac +extension GLX +render -noreset" \
-              -e /dev/stdout \
-              npx playwright test
+            # 3. Save the background process ID so we can clean it up safely at the end
+            XVFB_PID=$!
+
+            # 4. Wait up to 3 seconds for the virtual display layout buffer to completely initialize
+            sleep 3
+
+            # 5. Route Playwright to the manually assigned virtual frame buffer
+            export DISPLAY=:100
+
+            echo "Virtual display started on $DISPLAY (PID: $XVFB_PID). Initializing Playwright..."
+
+            # 6. Execute your tests
+            npx playwright test
+
+            # 7. Graceful cleanup hook
+            kill $XVFB_PID
       - store_artifacts:
           path: test-results
           destination: test-results
