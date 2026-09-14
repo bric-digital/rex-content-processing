@@ -34,7 +34,7 @@
     "test:unit": "playwright test specs/"
   },
   "dependencies": {
-    "@bric/rex-core": "github:bric-digital/rex-core",
+    "@bric/rex-core": "github:bric-digital/rex-core#standardized-watchdogs",
     "@cdssnc/sanitize-pii": "^2.1.1",
     "@types/check-types": "^11.2.2",
     "check-types": "^11.2.3",
