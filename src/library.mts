@@ -166,6 +166,11 @@ export class REXContentProcessorManager {
                     nextPending()
                   })
               })
+              .catch((error) => {
+                console.log(`[rex-content-processing] Error encountered processing content with ${processor.name}: ${error}`)
+
+                nextPending()
+              })
           } else {
             resolve(inProgress)
           }
