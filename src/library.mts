@@ -157,6 +157,8 @@ export class REXContentProcessorManager {
           const processor = pending.shift()
 
           if (processor !== undefined) {
+            console.log(`[rex-content-processing] Redacting with ${processor.name}...`)
+
             processor.processContent(inProgress)
               .then((processedContent) => {
                 this.processItem(processedContent, processor)
@@ -172,6 +174,8 @@ export class REXContentProcessorManager {
                 nextPending()
               })
           } else {
+            console.log(`[rex-content-processing] Encountered undefined processor.`)
+
             resolve(inProgress)
           }
         }
