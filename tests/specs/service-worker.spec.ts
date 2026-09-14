@@ -47,6 +47,7 @@ test.describe('REX Content Processing', () => {
         })
         .then((workerResponse) => {
           console.log('service worker 5')
+
           expect(workerResponse).toEqual({
             'no_processing': [
               'Service Worker: My phone number is 576-903-8867.',

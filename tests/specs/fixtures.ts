@@ -34,8 +34,12 @@ export const test = base.extend<{
   extensionId: async ({ context }, use) => {
     // for manifest v3:
     let [serviceWorker] = context.serviceWorkers();
-    if (!serviceWorker)
+
+    if (!serviceWorker) {
+      console.log('Waiting for service worker (id)...');
       serviceWorker = await context.waitForEvent('serviceworker');
+      console.log('Got service worker (id).');
+    }
 
     const extensionId = serviceWorker.url().split('/')[2];
     await use(extensionId);
@@ -46,9 +50,14 @@ export const test = base.extend<{
     })
 
     let [serviceWorker] = context.serviceWorkers();
+
     if (!serviceWorker) {
+      console.log('Waiting for service worker (sw)...');
       serviceWorker = await context.waitForEvent('serviceworker');
+      console.log('Got service worker (sw).');
     }
+
+    console.log(`Using service worker (sw): ${serviceWorker}`);
 
     use(serviceWorker)
       .then(() => {
