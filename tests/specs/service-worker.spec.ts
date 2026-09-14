@@ -12,6 +12,8 @@ test.describe('REX Content Processing', () => {
       return new Promise<void>((resolve) => {
         console.log('service worker 1')
 
+        expect(2).toEqual(1)
+
         resolve()
 
         // setTimeout(() => {
