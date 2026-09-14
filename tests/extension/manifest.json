@@ -6,6 +6,7 @@
   "permissions": [
     "scripting",
     "storage",
+    "webRequest",
     "nativeMessaging"
   ],
   "action": {
