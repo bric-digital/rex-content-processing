@@ -52,7 +52,10 @@ export const test = base.extend<{
 
     use(serviceWorker)
       .then(() => {
-        context.close();
+        setTimeout(() => {
+          console.log('Closing service worker...');
+          context.close();
+        }, 10000)
     })
   },
 });
