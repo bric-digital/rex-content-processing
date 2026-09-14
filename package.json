@@ -31,13 +31,15 @@
     "test:debug": "playwright test --debug",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
-    "test:unit": "playwright test specs/"
+    "test:unit": "playwright test specs/",
+    "server": "node tests/scripts/run-server.js"
   },
   "dependencies": {
     "@bric/rex-core": "github:bric-digital/rex-core#standardized-watchdogs",
     "@cdssnc/sanitize-pii": "^2.1.1",
     "@types/check-types": "^11.2.2",
     "check-types": "^11.2.3",
+    "express": "^5.2.1",
     "openredaction-in-browser": "github:bric-digital/openredaction-in-browser"
   }
 }
