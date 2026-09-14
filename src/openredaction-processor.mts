@@ -27,7 +27,9 @@ export class REXOpenRedactionContentProcessor extends REXContentProcessor {
       try{
         const options = ConfigCodec.importFromString(configuration);
         try{
+          console.log(`Creating OpenRedaction object...`)
           this.redactor = new OpenRedaction(options)
+          console.log(`Created OpenRedaction object.`)
         } catch {
           throw new Error ("Unable to load JSON configuration for OpenRedaction, configuration not updated.");
         }
@@ -38,7 +40,7 @@ export class REXOpenRedactionContentProcessor extends REXContentProcessor {
   }
 
   processString(content:string):Promise<string> {
-    return this.redactor.detect(content).then(result => result.redacted);
+    return this.redactor.detect(content).then(result => result.redacted).catch(err => err);
   }
 
   name(): string {
