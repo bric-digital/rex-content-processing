@@ -3,6 +3,8 @@
 import { test, expect } from './fixtures.js';
 
 test.describe('REX Content Processing', () => {
+  console.log('service worker -1')
+
   test('Processing though service worker', async ({serviceWorker}) => {
     console.log('service worker 0')
 
