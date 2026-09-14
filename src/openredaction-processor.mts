@@ -24,8 +24,10 @@ export class REXOpenRedactionContentProcessor extends REXContentProcessor {
     // encoded as a string
     const configuration = config['openRedaction']
     if (configuration !== undefined && check.string(configuration)) {
-      try{
+      try {
         const options = ConfigCodec.importFromString(configuration);
+
+        console.log(`REXOpenRedactionContentProcessor.updateConfiguration: ${JSON.stringify(options, null, " ")}`)
         try{
           this.redactor = new OpenRedaction(options)
         } catch {
