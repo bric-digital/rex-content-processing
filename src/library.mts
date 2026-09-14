@@ -75,6 +75,9 @@ export class REXContentProcessorManager {
         .then((result) => {
           resolve(result)
         })
+        .catch((error) => {
+          console.log(`REXContentProcessorManager.processItem[${processor.name}]: ${error}`)
+        })
       } else if (check.array(item)) {
         const toUpdate = [... item]
 
