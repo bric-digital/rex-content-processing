@@ -20,7 +20,6 @@ export const test = base.extend<{
       args: [
         `--disable-extensions-except=${pathToExtension}`,
         `--load-extension=${pathToExtension}`,
-        `--enable-features=DeclarativeNetRequestFeedback`,
       ],
     });
 
@@ -50,6 +49,8 @@ export const test = base.extend<{
     })
 
     let [serviceWorker] = context.serviceWorkers();
+
+    console.log(`Checking service worker (sw): ${serviceWorker}`);
 
     if (!serviceWorker) {
       console.log('Waiting for service worker (sw)...');
