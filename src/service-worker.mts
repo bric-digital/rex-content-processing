@@ -47,6 +47,9 @@ class REXContentProcessingModule extends REXServiceWorkerModule {
         .then((content) => {
           sendResponse(content)
         })
+        .catch((err) => {
+          console.log(`[rex-content-processing] handleMessage error: ${err}`)
+        })
 
       return true
     }
