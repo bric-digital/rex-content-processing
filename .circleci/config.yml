@@ -9,6 +9,12 @@ jobs:
     executor: node/default # use the default executor defined within the orb
     steps:
       - checkout
+      - run:
+          name: Install Xvfb and Playwright System Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y xvfb xauth
+            npx playwright install-deps chromium
       - node/install-packages:
           pkg-manager: npm
       - run:
@@ -19,7 +25,7 @@ jobs:
           command: npm run lint
       - run:
           name: Test code
-          command: sudo apt-get install -y xvfb xauth x11-utils && npx playwright install chromium && xvfb-run --server-args="-screen 0 1280x1024x24" npm run test:ci
+          command: xvfb-run --server-args="-screen 0 1280x1024x24" npm run test:ci
       - store_artifacts:
           path: test-results
           destination: test-results
