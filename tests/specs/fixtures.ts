@@ -41,14 +41,14 @@ export const test = base.extend<{
     await use(extensionId);
   },
   serviceWorker: async ({ context }, use) => {
+    context.on('console', msg => {
+      console.log(msg);
+    })
+
     let [serviceWorker] = context.serviceWorkers();
     if (!serviceWorker) {
       serviceWorker = await context.waitForEvent('serviceworker');
     }
-
-    context.on('console', msg => {
-      console.log(msg);
-    })
 
     use(serviceWorker)
       .then(() => {

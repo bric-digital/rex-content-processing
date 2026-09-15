@@ -157,17 +157,16 @@ export class REXContentProcessorManager {
           const processor = pending.shift()
 
           if (processor !== undefined) {
-            console.log(`[rex-content-processing] Redacting with ${processor.name()}...`)
-
             processor.processContent(inProgress)
               .then((processedContent) => {
-                console.log(`[rex-content-processing] Processing item with ${processor.name()}...`)
-
                 this.processItem(processedContent, processor)
                   .then((result) => {
                     inProgress = result
 
-                    console.log(`[rex-content-processing] Processing complete with ${processor.name()}.`)
+                    nextPending()
+                  })
+                  .catch((error) => {
+                    console.log(`[rex-content-processing] Error encountered processing item with ${processor.name}: ${error}`)
 
                     nextPending()
                   })

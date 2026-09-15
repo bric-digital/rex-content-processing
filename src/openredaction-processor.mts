@@ -27,9 +27,7 @@ export class REXOpenRedactionContentProcessor extends REXContentProcessor {
       try{
         const options = ConfigCodec.importFromString(configuration);
         try{
-          console.log(`Creating OpenRedaction object...`)
           this.redactor = new OpenRedaction(options)
-          console.log(`Created OpenRedaction object.`)
         } catch {
           throw new Error ("Unable to load JSON configuration for OpenRedaction, configuration not updated.");
         }
