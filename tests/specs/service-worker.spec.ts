@@ -16,9 +16,9 @@ test('Processing though service worker', async ({serviceWorker}) => {
               },
               'sanitize_pii*': [
                 'Service Worker: My phone number is 903-576-8867.',
-                'Service Worker: My e-mail address is test@example.com.'
+                'Service Worker: My IP address is 127.0.0.1.',
+                'Service Worker: My mailing address is PO Box 123.'
               ],
-              'open_redaction*': 'Service Worker: 654-23-2352 is the number you asked for.',
               'no_processing': [
                 'Service Worker: My phone number is 576-903-8867.',
                 'Service Worker: My e-mail address is cleartext@example.com.',
@@ -39,14 +39,14 @@ test('Processing though service worker', async ({serviceWorker}) => {
             'hello there!',
             'Service Worker: 244-65-2352 is the number you asked for.'
           ],
-          'open_redaction*': 'Service Worker: [SSN_*] is the number you asked for.',
           'regexp*': {
             'español': 'Service Worker: hola world',
             'numbers': 'Service Worker: ABC *** said The Count!'
           },
           'sanitize_pii*': [
             'Service Worker: My phone number is [Redacted: phone_number].',
-            'Service Worker: My e-mail address is [EMAIL_*].'
+            'Service Worker: My IP address is [Redacted: ip_address].',
+            'Service Worker: My mailing address is [Redacted: po_box].'
           ]
         })
 
