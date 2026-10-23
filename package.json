@@ -39,7 +39,6 @@
     "@cdssnc/sanitize-pii": "^2.1.1",
     "@types/check-types": "^11.2.2",
     "check-types": "^11.2.3",
-    "express": "^5.2.1",
-    "openredaction-in-browser": "github:bric-digital/openredaction-in-browser"
+    "express": "^5.2.1"
   }
 }
