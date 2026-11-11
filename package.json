@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@bric/rex-core": "github:bric-digital/rex-core",
-    "@cdssnc/sanitize-pii": "^2.1.1",
+    "@cdssnc/sanitize-pii": "^2.3.1",
     "@types/check-types": "^11.2.2",
     "check-types": "^11.2.3",
     "express": "^5.2.1"
